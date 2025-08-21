@@ -24,10 +24,20 @@ jobs:
             exit 1
           fi
           echo "✅ All required environment variables are set"
+          echo "Store: ${{ vars.SHOPIFY_STORE }}"
+          echo "Theme ID: ${{ vars.THEME_ID }}"
+          echo "Token starts with: ${SHOPIFY_PASSWORD:0:10}..."
+
+      - name: Install Shopify CLI
+        run: npm install -g @shopify/cli @shopify/theme
 
       - name: Push Shopify theme
         env:
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_PASSWORD }}
           SHOPIFY_FLAG_STORE: ${{ vars.SHOPIFY_STORE }}
           SHOPIFY_FLAG_THEME_ID: ${{ vars.THEME_ID }}
-        run: npx @shopify/cli@latest theme push
+        run: |
+          echo "Starting Shopify theme push..."
+          echo "Store: $SHOPIFY_FLAG_STORE"
+          echo "Theme ID: $SHOPIFY_FLAG_THEME_ID"
+          npx @shopify/cli@latest theme push --verbose
