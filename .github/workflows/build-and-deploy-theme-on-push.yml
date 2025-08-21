@@ -10,17 +10,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build project
-        run: npm run build
-        
       - name: Push Shopify theme
         env:
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_PASSWORD }}
           SHOPIFY_FLAG_STORE: ${{ vars.SHOPIFY_STORE }}
           SHOPIFY_FLAG_THEME_ID: ${{ vars.THEME_ID }}
-          # SHOPIFY_FLAG_PATH: src
         run: npx @shopify/cli@latest theme push
 
