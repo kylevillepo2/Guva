@@ -1,0 +1,22 @@
+/* Increase slideshow height to prevent vertical cropping */
+@media screen and (min-width: 750px) {
+  .banner--large:not(.banner--adapt) {
+    min-height: 100vh !important; /* Full viewport height */
+  }
+  
+  /* Alternative: Use a specific larger height */
+  /* .banner--large:not(.banner--adapt) {
+    min-height: 90rem !important; 
+  } */
+}
+
+@media screen and (max-width: 749px) {
+  .banner--large:not(.banner--mobile-bottom):not(.banner--adapt) .banner__content {
+    min-height: 60rem !important; /* Increased mobile height */
+  }
+}
+
+/* Ensure the media container also takes full height */
+.banner--large .banner__media {
+  height: 100% !important;
+}
