@@ -1,8 +1,7 @@
 name: Build and Deploy theme on push
 
-on:
-  push
-    
+on: push
+
 jobs:
   push-shopify-theme:
     runs-on: ubuntu-latest
@@ -10,10 +9,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Check environment variables
+        run: |
+          if [ -z "${{ secrets.SHOPIFY_PASSWORD }}" ]; then
+            echo "❌ SHOPIFY_PASSWORD secret is not set"
+            exit 1
+          fi
+          if [ -z "${{ vars.SHOPIFY_STORE }}" ]; then
+            echo "❌ SHOPIFY_STORE variable is not set"
+            exit 1
+          fi
+          if [ -z "${{ vars.THEME_ID }}" ]; then
+            echo "❌ THEME_ID variable is not set"
+            exit 1
+          fi
+          echo "✅ All required environment variables are set"
+
       - name: Push Shopify theme
         env:
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_PASSWORD }}
           SHOPIFY_FLAG_STORE: ${{ vars.SHOPIFY_STORE }}
           SHOPIFY_FLAG_THEME_ID: ${{ vars.THEME_ID }}
         run: npx @shopify/cli@latest theme push
-
